@@ -6,50 +6,42 @@ import gateway.example.server.proxy.NettyProxyClient;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
+import io.netty.handler.codec.http.FullHttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HttpInboundHandler extends ChannelInboundHandlerAdapter {
     private static Logger logger = LoggerFactory.getLogger(HttpInboundHandler.class);
 
-    private final String remoteHost;
-    private final int remotePort;
+    private final String remoteHost="127.0.0.1";
+    private final int remotePort=8088;
     private Channel outboundChannel;
     private NettyProxyClient nettyProxyClient;
 //    private ChannelHandlerContext ctx;
 
-    public HttpInboundHandler(String remoteHost, int remotePort) {
-        this.remoteHost = remoteHost;
-        this.remotePort = remotePort;
-        nettyProxyClient=new NettyProxyClient(remoteHost,remotePort);
+    public HttpInboundHandler() {
+
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        nettyProxyClient.connect(ctx);
-        outboundChannel=nettyProxyClient.getOutboundChannel();
+//        nettyProxyClient.connect(ctx);
+//        outboundChannel=nettyProxyClient.getOutboundChannel();
 //        this.ctx=ctx;
     }
 
     @Override
     public void channelRead(final ChannelHandlerContext ctx, Object msg) {
         logger.info("HttpInboundHandler-msg-->"+msg);
-        logger.info("outboundChannel-->"+outboundChannel.localAddress());
-        logger.info("outboundChannel.isActive()-->"+outboundChannel.isActive());
-        if (outboundChannel.isActive()) {
-            logger.info("outboundChannel.writeAndFlush()-->"+msg);
-
-            outboundChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) {
-                    if (future.isSuccess()) {
-                        ctx.channel().read();
-                    } else {
-                        future.channel().close();
-                    }
-                }
-            });
+//        解析request,获取remote_endpoint
+        if (msg instanceof FullHttpRequest) {
+            FullHttpRequest request = (FullHttpRequest) msg;
+            String host = request.headers().get("remote_endpoint");
+            String[] temp = host.split(":");
+            nettyProxyClient=new NettyProxyClient(temp[0],Integer.parseInt(temp[1]));
+            nettyProxyClient.connect(ctx,msg);
         }
+
     }
 
     @Override

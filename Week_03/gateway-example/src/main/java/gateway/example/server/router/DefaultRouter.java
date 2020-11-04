@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * ？是否可以将Channel add到list，然后根据具体规则get相应的channel writeAndFlush
+ *
+ */
 public class DefaultRouter implements HttpRule{
 //    public static List<String> endpoints= Arrays.asList("127.0.0.1:8088","127.0.0.1:8087","127.0.0.1:8089");
 //    public static String remoteHost="127.0.0.1";
@@ -49,22 +53,7 @@ public class DefaultRouter implements HttpRule{
         Channel outboundChannel=null;
         return outboundChannel;
     }
-    public Channel choose(HttpChannels channels){
-        Channel outboundChannel=null;
-        while (outboundChannel==null){
-            List<Channel> list = channels.getChannels();
-            int size=list.size();
-            if(size==0){
-                return null;
-            }
-            outboundChannel=routerRandom(channels);
-            if (outboundChannel == null) {//如果获取到的服务实例为空
-                Thread.yield();
-                continue;
-            }
-        }
-        return outboundChannel;
-    }
+
 //    public static void covertEndpoint(String endpoint){
 //        remoteHost=endpoint.split(":")[0];
 //        remotePort=Integer.parseInt(endpoint.split(":")[1]);

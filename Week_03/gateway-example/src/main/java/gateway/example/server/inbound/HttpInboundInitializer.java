@@ -2,6 +2,7 @@
 package gateway.example.server.inbound;
 
 import gateway.example.server.filter.HttpRequestExampleFilter;
+import gateway.example.server.router.HttpRouterExampleFilter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.*;
@@ -30,7 +31,8 @@ public class HttpInboundInitializer extends ChannelInitializer<SocketChannel> {
         ch.pipeline().addLast(new HttpContentDecompressor());
 
         ch.pipeline().addLast(new HttpRequestExampleFilter());
-        ch.pipeline().addLast(new HttpInboundHandler(remoteHost, remotePort));
+        ch.pipeline().addLast(new HttpRouterExampleFilter());
+        ch.pipeline().addLast(new HttpInboundHandler());
         ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
     }
 }

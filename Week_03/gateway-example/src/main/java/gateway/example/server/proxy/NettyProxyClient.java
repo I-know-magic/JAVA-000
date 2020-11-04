@@ -34,7 +34,7 @@ public class NettyProxyClient {
     }
 
 //    public  void connect(ChannelHandlerContext ctx,String rHost,int rPort){
-    public  void connect(ChannelHandlerContext ctx){
+    public  void connect(ChannelHandlerContext ctx,Object msg){
         final Channel inboundChannel = ctx.channel();
         logger.info("NettyProxyClient-->"+inboundChannel.localAddress());
         Bootstrap b = new Bootstrap();
@@ -67,16 +67,19 @@ public class NettyProxyClient {
 //        ChannelFuture f = b.connect(rHost, rPort);
         outboundChannel = f.channel();
         logger.info("NettyProxyClient:outboundChannel-->"+outboundChannel.localAddress());
-//        f.addListener(new ChannelFutureListener() {
-//            @Override
-//            public void operationComplete(ChannelFuture future) {
-//                if (future.isSuccess()) {
-//                    inboundChannel.read();
-//                } else {
-//                    inboundChannel.close();
-//                }
-//            }
-//        });
+        f.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture future) {
+                if (future.isSuccess()) {
+                    logger.info("outboundChannel.isActive()-->"+outboundChannel.isActive());
+                    logger.info("future.isSuccess()");
+                    future.channel().writeAndFlush(msg);
+                } else {
+//                    future.channel().close();
+                    inboundChannel.close();
+                }
+            }
+        });
     }
 
 }

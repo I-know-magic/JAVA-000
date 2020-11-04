@@ -24,6 +24,7 @@ public class ApiServerInboundHandler extends ChannelInboundHandlerAdapter {
             HttpHeaders headers=httpRequest.headers();
 //            获取header信息进行处理
             String paramStr=headers.get("nio");
+            String remoteEndpoint=headers.get("remote_endpoint");
 //          处理参数等数据
 
 //            if("/error".equalsIgnoreCase(uri)){
@@ -33,8 +34,8 @@ public class ApiServerInboundHandler extends ChannelInboundHandlerAdapter {
 //            }
 
             if(HttpMethod.GET.equals(method)){
-                logger.info("客户端请求数据内容：" +uri+"-->data:"+ data+"-->header:"+paramStr);
-                ret = "服务端接受到数据，接收到数据为："  +uri+"-->data:"+ data+"-->header:"+paramStr;
+                logger.info("客户端请求数据内容：" +uri+"-->data:"+ data+"-->header:"+paramStr+",remoteEndpoint-->"+remoteEndpoint);
+                ret = "服务端接受到数据，接收到数据为："  +uri+"-->data:"+ data+"-->header:"+paramStr+",remoteEndpoint-->"+remoteEndpoint;
                 response( ctx,ret, HttpResponseStatus.OK);
             }
             if (HttpMethod.POST.equals(method)){
