@@ -13,16 +13,10 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * 后续将不同的规则定义不同的类
+ *
  */
-public class HttpRouterExampleFilter extends ChannelInboundHandlerAdapter implements HttpEndpointRouter{
+public class HttpRouterExampleFilter extends ChannelInboundHandlerAdapter implements HttpRouterFilter{
     private static Logger logger = LoggerFactory.getLogger(HttpRouterExampleFilter.class);
-//    定义一个集合，存放代理服务器连接信息，可用其他方式进行添加。
-    public  List<String> endpoints= Arrays.asList("127.0.0.1:8088","127.0.0.1:8087","127.0.0.1:8089");
-    static final String REMOTE_ADDR = System.getProperty("remote_addr", "127.0.0.1:8088");
-    static int index=0;
-//    默认 random
-    String rule= System.getProperty("rule", "random");
 
     public HttpRouterExampleFilter() {
         super();
@@ -32,64 +26,27 @@ public class HttpRouterExampleFilter extends ChannelInboundHandlerAdapter implem
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.info("router start ->msg"+msg);
         if(msg instanceof FullHttpRequest){
-            String endpoint=routerRandom(endpoints);
+            HttpEndpointRouter httpRouter=new RandomRule();
+            String rule=RouterConstant.rule;
             switch (rule){
                 case "random":
-                    endpoint=routerRandom(endpoints);
+                    httpRouter=new RandomRule();
                     break;
                 case "round":
-                    endpoint=routerRound(endpoints);
+                    httpRouter=new RoundRule();;
                     break;
             }
+            String endpoint=httpRouter.route(RouterConstant.endpoints);
             logger.info("HttpRouterExampleFilter:channelRead-endpoint-->"+endpoint+",rule-->"+rule);
             filter((FullHttpRequest) msg,ctx,endpoint);
             logger.info("router end ->msg"+(FullHttpRequest)msg);
         }
         super.channelRead(ctx, msg);
     }
+
     @Override
     public void filter(FullHttpRequest req, ChannelHandlerContext ctx,String endpoint) {
         HttpHeaders headers = req.headers();
         headers.add("remote_endpoint",endpoint);
     }
-
-    @Override
-    public String route(List<String> endpoints) {
-        return "";
-    }
-
-    @Override
-    public String routerRandom(List<String> endpoints) {
-        if(endpoints.size()==0){
-            return REMOTE_ADDR;
-        }
-        Random random=new Random();
-        int n=random.nextInt(endpoints.size());
-        return endpoints.get(n);
-    }
-
-    @Override
-    public String routerRound(List<String> endpoints) {
-        String endpoint=endpoints.get(index);
-        index=(index+1) % endpoints.size();
-        logger.info("index-->"+index+",endpoint--->"+endpoint);
-        return endpoint;
-    }
-//    public static String routerRound1(List<String> endpoints) {
-//        String endpoint=endpoints.get(index);
-//        index=(index+1) % endpoints.size();
-//        logger.info("index-->"+index+",endpoint--->"+endpoint);
-//        return endpoint;
-//    }
-
-    public static void main(String[] args) {
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-//        routerRound1(HttpRouterExampleFilter.endpoints);
-    }
-
 }

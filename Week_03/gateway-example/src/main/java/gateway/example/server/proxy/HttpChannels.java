@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HttpChannels {
-    private List<Channel> channels=new ArrayList<Channel>();
+    private static List<Channel> channels=new ArrayList<Channel>();
 
-    public List<Channel> getChannels() {
+    public static List<Channel> getChannels() {
         return channels;
     }
 
-    public void setChannels(Channel channel) {
-        this.channels.add(channel);
+    public static void setChannels(Channel channel) {
+        channels.add(channel);
     }
 }

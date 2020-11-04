@@ -8,8 +8,6 @@ import java.util.List;
 public interface HttpEndpointRouter {
     
     String route(List<String> endpoints);
-    String routerRandom(List<String> endpoints);
-    String routerRound(List<String> endpoints);
-    void filter(FullHttpRequest req, ChannelHandlerContext ctx, String endpoint);
-    
+//    void filter(FullHttpRequest req, ChannelHandlerContext ctx, String endpoint);
+
 }

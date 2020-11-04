@@ -16,11 +16,9 @@ import java.util.Random;
  *
  */
 public class DefaultRouter implements HttpRule{
-//    public static List<String> endpoints= Arrays.asList("127.0.0.1:8088","127.0.0.1:8087","127.0.0.1:8089");
-//    public static String remoteHost="127.0.0.1";
-//    public static int remotePort=8088;
+
     @Override
-    public  Channel routerRandom(HttpChannels channels){
+    public  Channel router(HttpChannels channels){
             Channel outboundChannel=null;
             while (outboundChannel==null){
                 List<Channel> list = channels.getChannels();
@@ -48,30 +46,15 @@ public class DefaultRouter implements HttpRule{
             System.out.println("DefaultRouter-->"+outboundChannel.localAddress());
             return outboundChannel;
     }
-    @Override
-    public  Channel routerRound(HttpChannels channels){
-        Channel outboundChannel=null;
-        return outboundChannel;
-    }
+//    @Override
+//    public  Channel routerRound(HttpChannels channels){
+//        Channel outboundChannel=null;
+//        return outboundChannel;
+//    }
 
 //    public static void covertEndpoint(String endpoint){
 //        remoteHost=endpoint.split(":")[0];
 //        remotePort=Integer.parseInt(endpoint.split(":")[1]);
 //    }
-    public static void main(String[] args) {
-//        String endpoint=RouterUtils.routerRandom(RouterUtils.endpoints);
-//        System.out.println(endpoint);
-//        RouterUtils.covertEndpoint(endpoint);
-//        System.out.println("remoteHost-->"+remoteHost);
-//        System.out.println("remotePort-->"+remotePort);
 
-//        int[] arr = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-//        int index = 0; // 索引:指定起始位置
-//        int size=RouterUtils.endpoints.size();
-//        for (int i = 0; i < size; i++) {
-//            System.out.println(RouterUtils.endpoints.get(index) + " ,index=" + index);
-//            int nextIndex = (index + 1) % size;
-//            index = nextIndex;
-//        }
-    }
 }
