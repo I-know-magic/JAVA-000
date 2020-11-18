@@ -16,7 +16,7 @@ public class UserController {
     RedisUtil redisUtil;
 
     @GetMapping("/user")
-    @MyCache(value = {"redis"},key = "lvpeng")
+    @MyCache(value = {"redis"},key = "#id")
     public String testUser(@RequestParam("id") long id){
         log.info("testUser-->"+id);
         return "lvpeng";

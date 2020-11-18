@@ -76,7 +76,8 @@ public class CacheAspect {
         MyCache myCache=method.getAnnotation(MyCache.class);
         String keyName=myCache.key();
 //        定义规则例如SPEl ，解析key
-        String key=cacheUtil.parsingKey(keyName);
+        String key=cacheUtil.parsingKey(keyName,argNames,args);
+        log.info("key--->"+key);
         String[] value=myCache.value();
         int time=myCache.time();
         for (int i = 0; i <value.length ; i++) {

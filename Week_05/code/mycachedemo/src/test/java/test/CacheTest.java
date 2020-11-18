@@ -24,7 +24,7 @@ public class CacheTest {
     @Resource
     RedisUtil redisUtil;
     long id=1000;
-    String name="lvpeng";
+    String name="id-1000";
     @Test
     public void testCache(){
         userController.testUser(id);

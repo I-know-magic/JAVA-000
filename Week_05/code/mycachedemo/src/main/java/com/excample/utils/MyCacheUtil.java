@@ -24,15 +24,20 @@ import java.util.concurrent.TimeUnit;
 @Component("cacheUtil")
 public final class MyCacheUtil {
 
-    public  String parsingKey(String expr, Object data) {
-        ExpressionParser parser = new SpelExpressionParser();
-        Expression expression = parser.parseExpression(expr, new TemplateParserContext());
-        return expression.getValue(data, String.class);
-    }
-    public  String parsingKey(String expr) {
-        ExpressionParser parser = new SpelExpressionParser();
-        Expression expression = parser.parseExpression(expr, new TemplateParserContext());
-        return expression.getValue(String.class);
+//    public  String parsingKey(String expr, Object data) {
+//        ExpressionParser parser = new SpelExpressionParser();
+//        Expression expression = parser.parseExpression(expr, new TemplateParserContext());
+//        return expression.getValue(data, String.class);
+//    }
+    public  String parsingKey(String expr,String[] argNames,Object[] args) {
+        ExpressionParser expressionParser = new SpelExpressionParser();
+        Expression expression = expressionParser.parseExpression(expr);
+        EvaluationContext context = new StandardEvaluationContext();
+        for (int i = 0; i <argNames.length ; i++) {
+            context.setVariable(argNames[i], argNames[i]+"-"+args[i]);
+        }
+
+        return expression.getValue(context).toString();
     }
     public String parsingKey(String expr, Map<String, Object> map) {
 
