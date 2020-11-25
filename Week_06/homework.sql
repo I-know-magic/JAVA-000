@@ -369,7 +369,7 @@ CREATE TABLE `order_refund` (
   `last_update_at` datetime DEFAULT NULL,
   `last_update_by` varchar(50) DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`refund_id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `refund_sn_unique` (`refund_sn`),
   KEY `order_number` (`order_number`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20  DEFAULT CHARSET=utf8  COMMENT='退款信息';
