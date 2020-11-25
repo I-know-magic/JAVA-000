@@ -101,7 +101,7 @@ CREATE TABLE `shop` (
   `last_update_at` datetime DEFAULT NULL,
   `last_update_by` varchar(50) DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`shop_id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `shop_user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8  COMMENT='商铺';
