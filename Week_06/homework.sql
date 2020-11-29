@@ -19,8 +19,8 @@ CREATE TABLE `user` (
   `last_login_ip` varchar(20) DEFAULT NULL COMMENT '上次登录IP',
   `user_regtime` datetime NOT NULL COMMENT '注册时间',
   `user_regip` varchar(50) DEFAULT NULL COMMENT '注册IP',
-  `pic` varchar(255) DEFAULT NULL COMMENT '头像'
-  `remark` varchar(500),
+  `pic` varchar(255) DEFAULT NULL COMMENT '头像',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   `create_at` datetime DEFAULT NULL,
   `create_by` varchar(50) DEFAULT NULL,
   `last_update_at` datetime DEFAULT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`bind_mobile`),
   KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='用户表';
 /**
 *配送地址
 */
@@ -55,7 +55,7 @@ CREATE TABLE `user_addr` (
   `last_update_by` varchar(50) DEFAULT NULL,
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COMMENT='用户配送地址';
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COMMENT='用户配送地址';
 
 /**
 *订单配送
@@ -67,7 +67,7 @@ CREATE TABLE `user_order_addr` (
   `addr_id` bigint(20)  NOT NULL COMMENT '地址ID',
   `order_id` varchar(36) NOT NULL DEFAULT '0' COMMENT 'order_id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户订单配送地址';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户订单配送地址';
 
 
 
@@ -104,7 +104,7 @@ CREATE TABLE `shop` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `mobile` (`mobile`),
   UNIQUE KEY `shop_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8  COMMENT='商铺';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4  COMMENT='商铺';
 
 /**
 *商品
@@ -118,7 +118,7 @@ CREATE TABLE `prod` (
   `ori_price` decimal(15,2) DEFAULT '0.00' COMMENT '原价',
   `price` decimal(15,2) DEFAULT NULL COMMENT '现价',
   `brief` varchar(500) DEFAULT '' COMMENT '简要描述,卖点等',
-  `attribute_list` json DEFAULT '' COMMENT '商品属性，可以改为单独的表id,value,name',
+  `attribute_list` json DEFAULT null COMMENT '商品属性，可以改为单独的表id,value,name',
   `content` text COMMENT '详细描述',
   `pic` varchar(255) DEFAULT NULL COMMENT '商品主图',
   `imgs` varchar(1000) DEFAULT NULL COMMENT '商品图片，以,分割',
@@ -130,7 +130,7 @@ CREATE TABLE `prod` (
   `delivery_template_id` bigint(20) DEFAULT NULL COMMENT '运费',
   PRIMARY KEY (`id`),
   KEY `shop_id` (`shop_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='商品';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='商品';
 DROP TABLE IF EXISTS `sku`;
 /**
 *商品规格表
@@ -138,7 +138,7 @@ DROP TABLE IF EXISTS `sku`;
 CREATE TABLE `sku` (
   `id` bigint(20)  NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `prod_id` bigint(20)   NOT NULL COMMENT '商品ID',
-  `properties` json DEFAULT '' COMMENT '销售属性 可以是单独的表id,value,name',
+  `properties` json DEFAULT null COMMENT '销售属性 可以是单独的表id,value,name',
   `ori_price` decimal(15,2) DEFAULT NULL COMMENT '原价',
   `price` decimal(15,2) DEFAULT NULL COMMENT '价格',
   `stocks` int(11) NOT NULL COMMENT '商品在付款减库存的状态下，该sku上未付款的订单数量',
@@ -157,7 +157,7 @@ CREATE TABLE `sku` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `prod_id` (`prod_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='单品SKU表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='单品SKU表';
 
 
 
@@ -201,7 +201,7 @@ CREATE TABLE `order` (
   UNIQUE KEY `order_number_unique_ind` (`order_number`),
   UNIQUE KEY `order_number_userid_unique_ind` (`user_id`,`order_number`),
   KEY `shop_id` (`shop_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
 /**
 *订单详情
 */
@@ -231,7 +231,7 @@ CREATE TABLE `order_item` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_number` (`order_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='订单详情';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='订单详情';
 
 /**
 *订单快照
@@ -273,7 +273,7 @@ CREATE TABLE `order_snapshot` (
   UNIQUE KEY `order_number_unique_ind` (`order_number`),
   UNIQUE KEY `order_number_userid_unique_ind` (`user_id`,`order_number`),
   KEY `shop_id` (`shop_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='订单快照';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='订单快照';
 /**
 *订单详情快照
 */
@@ -303,7 +303,7 @@ CREATE TABLE `order_item_snapshot` (
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `order_number` (`order_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='订单详情快照';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='订单详情快照';
 /**
 *支付信息
 */
@@ -328,7 +328,7 @@ CREATE TABLE `order_payment` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `primary_order_no` (`order_number`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='支付信息';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='支付信息';
 
 /**
 *退款
@@ -372,7 +372,7 @@ CREATE TABLE `order_refund` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `refund_sn_unique` (`refund_sn`),
   KEY `order_number` (`order_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=20  DEFAULT CHARSET=utf8  COMMENT='退款信息';
+) ENGINE=InnoDB AUTO_INCREMENT=20  DEFAULT CHARSET=utf8mb4  COMMENT='退款信息';
 
 /**
 * 物流
@@ -380,9 +380,9 @@ CREATE TABLE `order_refund` (
 DROP TABLE IF EXISTS `delivery`;
 
 CREATE TABLE `delivery` (
-  `dvy_id` bigint(20)   NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20)   NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `dvy_name` varchar(50) NOT NULL DEFAULT '' COMMENT '物流公司名称',
   `company_home_url` varchar(255) DEFAULT NULL COMMENT '公司主页',
   `query_url` varchar(520) NOT NULL COMMENT '查询接口，快递100接口。',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='物流公司';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4 COMMENT='物流公司';
