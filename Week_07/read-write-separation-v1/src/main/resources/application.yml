@@ -1,0 +1,30 @@
+server:
+  port: 9001
+spring:
+  jpa:
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      primary-dialect: org.hibernate.dialect.MySQL55Dialect
+      second-dialect: org.hibernate.dialect.MySQL55Dialect
+  dataSource:
+    primary:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3308/db?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      username: root
+      password:
+    second:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3309/db?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      username: root
+      password:
+    three:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3310/db?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC
+      username: root
+      password:
+
+
+
+
